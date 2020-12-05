@@ -28,6 +28,6 @@ public class EarthRotate : MonoBehaviour
     void Update()
     {
         float y = 360.0f / 1440.0f * dayTime;
-        transform.rotation = Quaternion.Euler(0, y, 0);
+        transform.rotation = Quaternion.Euler(-72.25f, y, -90f);
     }
 }
