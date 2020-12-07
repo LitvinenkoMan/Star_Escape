@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -13,10 +14,16 @@ public class PlayerMove : MonoBehaviour
     RaycastHit hitZ;
     RaycastHit hitNZ;
     float time;
+    public GameObject model1, model2;
 
     void Start()
     {
-
+    //    transform.position = new Vector3(0, 0, 0);
+    //    transform.rotation = new Quaternion(-90, 0, 0, 0);
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("asdaaaaaaa");
     }
 
     void Update()
@@ -64,8 +71,35 @@ public class PlayerMove : MonoBehaviour
 
         time += Time.deltaTime;
         float y = 360.0f / 2.0f * time;
-        transform.rotation = Quaternion.Euler(-90, y, 0);
+        transform.rotation = Quaternion.Euler(0, y, 0);
         if (time > 2)
             time = 0;
+    }
+
+    public void ChangeColor(string color)
+    {
+        switch (color)
+        {
+            case "Red":
+                model1.GetComponent<MeshRenderer>().materials[0].color = Color.red;
+                model2.GetComponent<MeshRenderer>().materials[0].color = Color.red;
+                break;
+            case "Blue":
+                model1.GetComponent<MeshRenderer>().materials[0].color = Color.blue;
+                model2.GetComponent<MeshRenderer>().materials[0].color = Color.blue;
+                break;
+            case "Green":
+                model1.GetComponent<MeshRenderer>().materials[0].color = Color.green;
+                model2.GetComponent<MeshRenderer>().materials[0].color = Color.green;
+                break;
+            case "Black":
+                model1.GetComponent<MeshRenderer>().materials[0].color = Color.black;
+                model2.GetComponent<MeshRenderer>().materials[0].color = Color.black;
+                break;
+            case "Yellow":
+                model1.GetComponent<MeshRenderer>().materials[0].color = Color.yellow;
+                model2.GetComponent<MeshRenderer>().materials[0].color = Color.yellow;
+                break;
+        }
     }
 }

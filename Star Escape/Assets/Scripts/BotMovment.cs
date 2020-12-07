@@ -13,15 +13,20 @@ public class BotMovment : MonoBehaviour
     float positionSubstraction = 0;
     public string BotSpeed;
     public GameObject Player;
+    int health;
+    public Text healthText;
+    public GameObject deathScreen;
     // Start is called before the first frame update
     void Start()
     {
-
+        health = 3; // временно!
     }
 
     // Update is called once per frame
     void Update()
     {
+        healthText.text = health.ToString();
+
         RayZ.origin = transform.position;
         RayNZ.origin = transform.position;
 
@@ -36,30 +41,46 @@ public class BotMovment : MonoBehaviour
 
         positionSubstraction = Player.transform.position.z - transform.position.z;
         time += Time.deltaTime;
-        float y = 360.0f / 2.0f * time;
-        transform.rotation = Quaternion.Euler(-72.25f, y, -90f);
+        float y = 360.0f / float.Parse(BotSpeed) * time;
+        transform.rotation = Quaternion.Euler(0, y, 0);
 
         if (hitZ.distance == 0 && time > float.Parse(BotSpeed) && positionSubstraction > 0)
         {
             transform.position += new Vector3(0, 0, 1);
         }
-        
+
         if (hitNZ.distance == 0 && time > float.Parse(BotSpeed) && positionSubstraction < 0)
         {
-            transform.position += new Vector3(0, 0, -1);    
+            transform.position += new Vector3(0, 0, -1);
         }
-        
+
         if (time > float.Parse(BotSpeed))
         {
             time = 0;
         }
-    }
-
-    private void OnTriggerEnter(Collider collider)
-    {
-        if (collider.tag == "Player")
+        if (health == 0)
         {
-            //int Helth =
+            deathScreen.SetActive(true);
         }
     }
+    public void ChangeSpeed(Text textBox)
+    {
+        BotSpeed = textBox.text.ToString();
+    }
+    public void ChangeLifes(Text textBox)
+    {
+        health = int.Parse(textBox.text);
+    }
+
+    //public void OnTriggerStay(Collider other)
+    //{
+    //    Debug.Log("asdad");
+    //    if (other.tag == "Player")
+    //    {
+    //        if (health != 0)
+    //        {
+    //            health--;
+    //        }
+    //    }
+    //}
 }
