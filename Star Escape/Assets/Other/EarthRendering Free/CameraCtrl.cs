@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CameraCtrl : MonoBehaviour
 {
-	public Transform light = null;
+	//public Transform light = null;
 	public MeshRenderer earthRenderer = null;
 	public MeshRenderer atmosphereRenderer = null;
 
@@ -55,12 +55,12 @@ public class CameraCtrl : MonoBehaviour
 									Quaternion.AngleAxis(rotateSensitivity * yMove, Vector3.left));
 			}
 		}
-		else if (Input.GetButton("Fire2"))
+		/*else if (Input.GetButton("Fire2"))
 		{
-			Quaternion lightRotation = light.rotation;
+			Quaternion lightRotation = GetComponent<Light>().rotation;
 			lightRotation *= Quaternion.AngleAxis(-xMove * 2, Vector3.up);
 			light.rotation = lightRotation;
-		}
+		}*/
 		else if (Input.GetButton("Fire3"))
 		{
 			const float MOUSE_TRANSLATE_SENSITIVITY = 10;
