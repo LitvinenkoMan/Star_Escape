@@ -13,21 +13,61 @@ public class PlayerMove : MonoBehaviour
     RaycastHit hitNX;
     RaycastHit hitZ;
     RaycastHit hitNZ;
-    float time;
+    float time, timeDeathZone;
     public GameObject model1, model2;
+    int health;
+    public Text healthText;
+    public GameObject deathScreen;
+    bool dead = false, firstHit = true;
+    public GameObject EvilSmile, StarDust;
 
     void Start()
     {
-    //    transform.position = new Vector3(0, 0, 0);
-    //    transform.rotation = new Quaternion(-90, 0, 0, 0);
+        health = 3; // по дефолту, убрать надо потом
     }
-    void OnTriggerEnter(Collider other)
+    IEnumerator TimeDeathZoneCounter()
     {
-        Debug.Log("asdaaaaaaa");
+        while (true)
+        {
+            timeDeathZone += Time.deltaTime; yield return null;
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Moon")
+        {
+            StartCoroutine(TimeDeathZoneCounter());
+            if ((health != 0 && timeDeathZone > 30) || firstHit)
+            {
+                health--;
+                timeDeathZone = 0;
+                firstHit = false;
+            }
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Moon")
+        {
+            timeDeathZone = 0;
+            firstHit = true;
+            StopAllCoroutines();
+        }
     }
 
     void Update()
     {
+        Debug.Log(timeDeathZone);
+        healthText.text = health.ToString();
+        if (health == 0)
+        {
+            deathScreen.SetActive(true);
+            EvilSmile.SetActive(true);
+            EvilSmile.transform.position = new Vector3(transform.position.x, 1.5f, transform.position.z);
+            StopAllCoroutines();
+            dead = true;
+            StarDust.SetActive(false);
+        }
         ////// set Position
         RayX.origin = transform.position;
         RayNX.origin = transform.position;
@@ -52,21 +92,24 @@ public class PlayerMove : MonoBehaviour
         Debug.DrawLine(RayX.origin, hitX.point);
         Debug.DrawLine(RayNX.origin, hitNX.point);
 
-        if (hitNX.distance == 0 && Input.GetKeyDown(KeyCode.A))
+        if (!dead)
         {
-            transform.position += new Vector3(-1, 0, 0);
-        }
-        if (hitZ.distance == 0 && Input.GetKeyDown(KeyCode.W))
-        {
-            transform.position += new Vector3(0, 0, 1);
-        }
-        if (hitX.distance == 0 && Input.GetKeyDown(KeyCode.D))
-        {
-            transform.position += new Vector3(1, 0, 0);
-        }
-        if (hitNZ.distance == 0 && Input.GetKeyDown(KeyCode.S))
-        {
-            transform.position += new Vector3(0, 0, -1);
+            if (hitNX.distance == 0 && Input.GetKeyDown(KeyCode.A))
+            {
+                transform.position += new Vector3(-1, 0, 0);
+            }
+            if (hitZ.distance == 0 && Input.GetKeyDown(KeyCode.W))
+            {
+                transform.position += new Vector3(0, 0, 1);
+            }
+            if (hitX.distance == 0 && Input.GetKeyDown(KeyCode.D))
+            {
+                transform.position += new Vector3(1, 0, 0);
+            }
+            if (hitNZ.distance == 0 && Input.GetKeyDown(KeyCode.S))
+            {
+                transform.position += new Vector3(0, 0, -1);
+            }
         }
 
         time += Time.deltaTime;
@@ -74,6 +117,10 @@ public class PlayerMove : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, y, 0);
         if (time > 2)
             time = 0;
+    }
+    public void ChangeLifes(Text textBox)
+    {
+        health = int.Parse(textBox.text);
     }
 
     public void ChangeColor(string color)

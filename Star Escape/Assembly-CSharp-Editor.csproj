@@ -36,7 +36,7 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Deep Space Planets\_particles\_nitro\Scripts\Editor\ScaleEditor.cs" />
+     <Compile Include="Assets\Universe\Editor\UniverseTool.cs" />
     <Reference Include="UnityEngine">
         <HintPath>D:/Programs/Unity3D/2020.1.16f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
